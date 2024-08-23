@@ -186,6 +186,7 @@ fn do_write(bytes: &[u8]) {
 /// We will also need to acquire the critical section when we write to the USB serial buffer
 /// to prevent interleaving with the defmt logger
 #[ram]
+#[allow(clippy::result_unit_err)]
 pub fn write_to_usb_serial_buffer(bytes: &[u8]) -> Result<(), ()> {
     let restore = unsafe { critical_section::acquire() };
     core::sync::atomic::fence(core::sync::atomic::Ordering::SeqCst);
