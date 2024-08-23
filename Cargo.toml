@@ -1,0 +1,43 @@
+[package]
+name = "esp-fast-serial"
+version = "0.1.0"
+edition = "2021"
+authors = ["Fan Jiang <i@fanjiang.me>"]
+license = "Apache-2.0"
+resolver = "2"
+
+[dependencies]
+esp-hal = { version = "0.19.*", default-features = false, features = [
+    "async",
+    "embedded-hal",
+] }
+esp-hal-embassy = { version = "0.2.*", default-features = false }
+esp-backtrace = { version = "0.13.*", default-features = false, features = [
+    "panic-handler",
+    "exception-handler",
+    "defmt",
+] }
+esp-println = { version = "0.9.*", default-features = false, features = [
+    "log",
+    # "defmt-espflash",
+    "jtag-serial",
+    "critical-section",
+] }
+embedded-hal = "1.0.0"
+embedded-hal-async = "1.0.0"
+embedded-io = "0.6.1"
+embedded-io-async = "0.6.1"
+critical-section = { version = "1.1.*", default-features = false }
+defmt = { package = "defmt", version = "0.3.8", features = ["encoding-rzcobs"] }
+embassy-futures = "0.1.*"
+embassy-sync = "0.6.*"
+embassy-executor = { version = "0.6.0" }
+bbqueue = { version = "0.5.1" }
+
+[features]
+esp32 = []
+esp32s3 = []
+esp32c3 = []
+esp32h2 = []
+esp32s2 = []
+esp32p4 = []
