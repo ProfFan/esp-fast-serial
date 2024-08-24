@@ -1,6 +1,6 @@
 [package]
 name = "esp-fast-serial"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 authors = ["Fan Jiang <i@fanjiang.me>"]
 license = "MIT OR Apache-2.0"
