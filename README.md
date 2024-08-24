@@ -32,6 +32,9 @@ Then, in your `main.rs`:
 
 ```rust
 spawner.spawn(esp_fast_serial::serial_comm_task(peripherals.USB_DEVICE));
+
+// After the task created the serial I/O, you can get the handle to the RX queue
+let reader = esp_fast_serial::reader_take();
 ```
 
 ## License
