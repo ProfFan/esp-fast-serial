@@ -430,6 +430,7 @@ dependencies = [
  "esp-hal",
  "esp-hal-embassy",
  "esp-println 0.9.1",
+ "portable-atomic",
  "static_cell",
 ]
 
@@ -465,6 +466,7 @@ dependencies = [
  "esp-riscv-rt",
  "esp-synopsys-usb-otg",
  "esp32c3",
+ "esp32c6",
  "esp32h2",
  "esp32s2",
  "esp32s3",
@@ -576,6 +578,16 @@ name = "esp32c3"
 version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf6865f32b4936b2c396fd1bed3e935850b130282fdcb935af79c2da192cb638"
+dependencies = [
+ "critical-section",
+ "vcell",
+]
+
+[[package]]
+name = "esp32c6"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d5824acf92f8536c997e673113ce704c004f77e154fd550dc511b92d61bb34f6"
 dependencies = [
  "critical-section",
  "vcell",

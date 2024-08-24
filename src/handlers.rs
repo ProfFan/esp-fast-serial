@@ -1,13 +1,7 @@
 use esp_hal;
 
-#[cfg(not(feature = "esp32p4"))]
+#[cfg(any(feature = "esp32s3"))]
 fn halt_core(core: esp_hal::Cpu) {
-    // #[cfg(feature = "esp32")]
-    // mod registers {
-    //     pub(crate) const OPTIONS0: u32 = 0x3ff48000;
-    //     pub(crate) const SW_CPU_STALL: u32 = 0x3ff480ac;
-    // }
-
     #[cfg(feature = "esp32p4")]
     mod registers {
         pub(crate) const SW_CPU_STALL: u32 = 0x50115200;
@@ -50,7 +44,7 @@ pub fn custom_halt() -> ! {
     #[cfg(feature = "esp32p4")]
     unsafe {}
 
-    #[cfg(not(feature = "esp32p4"))]
+    #[cfg(any(feature = "esp32s3"))]
     {
         // We need to write the value "0x86" to stall a particular core. The write
         // location is split into two separate bit fields named "c0" and "c1", and the

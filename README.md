@@ -9,6 +9,7 @@ Fast serial communication for ESP32-S3 and similar microcontrollers that has a b
 - No need for external hardware.
 - Provides a fast concurrent `defmt` printer.
 - Provides a direct write function for ASCII/raw data alongside `defmt` logging.
+- Provides a custom halt function that allows reflashing without disconnecting the USB cable.
 
 ## Limitations
 
@@ -16,6 +17,7 @@ Fast serial communication for ESP32-S3 and similar microcontrollers that has a b
   - This is due to the current implementation of the "global" logger.
   - As `defmt` messages cannot be interleaved, we have to make a global buffer to store the full message.
   - It is possible to create your own local logger that can handle larger messages.
+- Currently only supports the S3 and the C6
 
 ## Usage
 
@@ -23,7 +25,7 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-esp-fast-serial = { version = "0.1.0", features = ["esp32s3"] }
+esp-fast-serial = { version = "0.2.2", features = ["esp32s3"] }
 ```
 
 Then, in your `main.rs`:

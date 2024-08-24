@@ -36,7 +36,10 @@ embassy-futures = "0.1.*"
 embassy-sync = "0.6.*"
 embassy-executor = { version = "0.6.0" }
 bbqueue = { version = "0.5.1" }
-static_cell = { version = "2.1.0", features = ["nightly"] }
+static_cell = { version = "2.1.0", features = [
+    "nightly",
+], default-features = false }
+portable-atomic = { version = "1.7.0", default-features = false }
 
 [features]
 esp32s3 = [
@@ -50,6 +53,12 @@ esp32c3 = [
     "esp-hal-embassy/esp32c3",
     "esp-backtrace/esp32c3",
     "esp-println/esp32c3",
+]
+esp32c6 = [
+    "esp-hal/esp32c6",
+    "esp-hal-embassy/esp32c6",
+    "esp-backtrace/esp32c6",
+    "esp-println/esp32c6",
 ]
 esp32h2 = [
     "esp-hal/esp32h2",
@@ -66,4 +75,5 @@ esp32s2 = [
 esp32p4 = [] # TODO
 
 [package.metadata.docs.rs]
-features = ["esp32s3"]
+features = ["esp32c6"]
+targets = ["riscv32imac-unknown-none-elf"]
