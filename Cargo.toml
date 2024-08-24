@@ -1,12 +1,13 @@
 [package]
 name = "esp-fast-serial"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 authors = ["Fan Jiang <i@fanjiang.me>"]
 license = "MIT OR Apache-2.0"
 resolver = "2"
 description = "Fast USB serial library for ESP32-S3 and similar chips with the USB-Serial-JTAG peripheral."
 readme = "README.md"
+repository = "https://github.com/ProfFan/esp-fast-serial"
 
 [dependencies]
 esp-hal = { version = "0.19.*", default-features = false, features = [
@@ -38,8 +39,31 @@ bbqueue = { version = "0.5.1" }
 static_cell = { version = "2.1.0", features = ["nightly"] }
 
 [features]
-esp32s3 = []
-esp32c3 = []
-esp32h2 = []
-esp32s2 = []
-esp32p4 = []
+esp32s3 = [
+    "esp-hal/esp32s3",
+    "esp-hal-embassy/esp32s3",
+    "esp-backtrace/esp32s3",
+    "esp-println/esp32s3",
+]
+esp32c3 = [
+    "esp-hal/esp32c3",
+    "esp-hal-embassy/esp32c3",
+    "esp-backtrace/esp32c3",
+    "esp-println/esp32c3",
+]
+esp32h2 = [
+    "esp-hal/esp32h2",
+    "esp-hal-embassy/esp32h2",
+    "esp-backtrace/esp32h2",
+    "esp-println/esp32h2",
+]
+esp32s2 = [
+    "esp-hal/esp32s2",
+    "esp-hal-embassy/esp32s2",
+    "esp-backtrace/esp32s2",
+    "esp-println/esp32s2",
+]
+esp32p4 = [] # TODO
+
+[package.metadata.docs.rs]
+features = ["esp32s3"]
