@@ -1,6 +1,7 @@
 #![no_std]
 #![deny(unsafe_op_in_unsafe_fn)]
 #![feature(impl_trait_in_assoc_type)]
+#![feature(type_alias_impl_trait)]
 
 pub mod handlers;
 
@@ -17,6 +18,7 @@ use embedded_io_async::Write;
 use esp_hal::usb_serial_jtag::UsbSerialJtag;
 use esp_hal::Async;
 use esp_println::Printer;
+use static_cell::{self, make_static};
 
 use esp_hal::macros::ram;
 
@@ -25,8 +27,8 @@ static mut USB_SERIAL_TX_BUFFER: bbqueue::BBBuffer<2048> = bbqueue::BBBuffer::ne
 static mut USB_SERIAL_TX_PRODUCER: Option<bbqueue::Producer<'static, 2048>> = None;
 static mut USB_SERIAL_TX_CONSUMER: Option<bbqueue::Consumer<'static, 2048>> = None;
 
-pub static mut USB_SERIAL_RX_QUEUE: embassy_sync::pipe::Pipe<CriticalSectionRawMutex, 256> =
-    embassy_sync::pipe::Pipe::new();
+static mut USB_SERIAL_RX_READER: Option<embassy_sync::pipe::Reader<CriticalSectionRawMutex, 256>> =
+    None;
 
 static mut WAKER: AtomicWaker = AtomicWaker::new();
 
@@ -215,6 +217,10 @@ pub fn write_to_usb_serial_buffer(bytes: &[u8]) -> Result<(), ()> {
     }
 }
 
+pub fn reader_take() -> embassy_sync::pipe::Reader<'static, CriticalSectionRawMutex, 256> {
+    unsafe { USB_SERIAL_RX_READER.take().unwrap() }
+}
+
 /// The serial task
 #[embassy_executor::task]
 #[ram]
@@ -223,6 +229,9 @@ pub async fn serial_comm_task(usb_dev: esp_hal::peripherals::USB_DEVICE) {
 
     // let peripherals = unsafe { Peripherals::steal() };
     let usb_serial = UsbSerialJtag::<Async>::new_async(usb_dev);
+
+    let serial_rx_queue =
+        make_static!(embassy_sync::pipe::Pipe::<CriticalSectionRawMutex, 256>::new());
 
     // interrupt::enable(Interrupt::USB_DEVICE, interrupt::Priority::Priority1).unwrap();
 
@@ -265,6 +274,12 @@ pub async fn serial_comm_task(usb_dev: esp_hal::peripherals::USB_DEVICE) {
     let rx_fut = async {
         let mut buf = [0u8; 64];
 
+        let (recvq_rx, recvq_tx) = serial_rx_queue.split();
+
+        unsafe {
+            USB_SERIAL_RX_READER = Some(recvq_rx);
+        }
+
         loop {
             let read_result = embedded_io_async::Read::read(&mut usb_rx, &mut buf).await;
 
@@ -286,7 +301,7 @@ pub async fn serial_comm_task(usb_dev: esp_hal::peripherals::USB_DEVICE) {
             let mut cursor = 0;
 
             while cursor < buf.len() {
-                match unsafe { USB_SERIAL_RX_QUEUE.try_write(&buf[cursor..]) } {
+                match recvq_tx.try_write(&buf[cursor..]) {
                     Ok(written_usize) => {
                         cursor += written_usize;
                     }

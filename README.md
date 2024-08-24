@@ -10,6 +10,13 @@ Fast serial communication for ESP32-S3 and similar microcontrollers that has a b
 - Provides a fast concurrent `defmt` printer.
 - Provides a direct write function for ASCII/raw data alongside `defmt` logging.
 
+## Limitations
+
+- Only supports `defmt` messages that are less than 2048 bytes.
+  - This is due to the current implementation of the "global" logger.
+  - As `defmt` messages cannot be interleaved, we have to make a global buffer to store the full message.
+  - It is possible to create your own local logger that can handle larger messages.
+
 ## Usage
 
 Add the following to your `Cargo.toml`:
