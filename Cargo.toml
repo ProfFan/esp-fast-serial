@@ -5,6 +5,8 @@ edition = "2021"
 authors = ["Fan Jiang <i@fanjiang.me>"]
 license = "MIT OR Apache-2.0"
 resolver = "2"
+description = "Fast USB serial library for ESP32-S3 and similar chips with the USB-Serial-JTAG peripheral."
+readme = "README.md"
 
 [dependencies]
 esp-hal = { version = "0.19.*", default-features = false, features = [
