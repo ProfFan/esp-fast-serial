@@ -25,7 +25,7 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-esp-fast-serial = { version = "0.2.2", features = ["esp32s3"] }
+esp-fast-serial = { version = "0.2.3", features = ["esp32s3"] }
 ```
 
 Then, in your `main.rs`:
