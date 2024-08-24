@@ -414,7 +414,7 @@ dependencies = [
 
 [[package]]
 name = "esp-fast-serial"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "bbqueue",
  "critical-section",

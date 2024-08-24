@@ -18,7 +18,7 @@ use embedded_io_async::Write;
 use esp_hal::usb_serial_jtag::UsbSerialJtag;
 use esp_hal::Async;
 use esp_println::Printer;
-use static_cell::{self, make_static};
+use static_cell::StaticCell;
 
 use esp_hal::macros::ram;
 
@@ -27,6 +27,8 @@ static mut USB_SERIAL_TX_BUFFER: bbqueue::BBBuffer<2048> = bbqueue::BBBuffer::ne
 static mut USB_SERIAL_TX_PRODUCER: Option<bbqueue::Producer<'static, 2048>> = None;
 static mut USB_SERIAL_TX_CONSUMER: Option<bbqueue::Consumer<'static, 2048>> = None;
 
+static USB_SERIAL_RX_PIPE: StaticCell<embassy_sync::pipe::Pipe<CriticalSectionRawMutex, 256>> =
+    StaticCell::new();
 static mut USB_SERIAL_RX_READER: Option<embassy_sync::pipe::Reader<CriticalSectionRawMutex, 256>> =
     None;
 
@@ -231,7 +233,7 @@ pub async fn serial_comm_task(usb_dev: esp_hal::peripherals::USB_DEVICE) {
     let usb_serial = UsbSerialJtag::<Async>::new_async(usb_dev);
 
     let serial_rx_queue =
-        make_static!(embassy_sync::pipe::Pipe::<CriticalSectionRawMutex, 256>::new());
+        USB_SERIAL_RX_PIPE.init(embassy_sync::pipe::Pipe::<CriticalSectionRawMutex, 256>::new());
 
     // interrupt::enable(Interrupt::USB_DEVICE, interrupt::Priority::Priority1).unwrap();
 
