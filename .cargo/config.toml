@@ -3,7 +3,7 @@ runner = "espflash flash --monitor -L defmt --partition-table partitions.csv"
 # runner = "probe-rs run --chip esp32s3 --idf-partition-table partitions.csv"
 
 [env]
-ESP_LOGLEVEL = "INFO"
+ESP_LOG = "info"
 DEFMT_LOG = "info"
 
 [build]

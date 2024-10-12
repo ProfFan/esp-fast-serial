@@ -1,6 +1,6 @@
 [package]
 name = "esp-fast-serial"
-version = "0.2.4"
+version = "0.3.0"
 edition = "2021"
 authors = ["Fan Jiang <i@fanjiang.me>"]
 license = "MIT OR Apache-2.0"
@@ -10,17 +10,14 @@ readme = "README.md"
 repository = "https://github.com/ProfFan/esp-fast-serial"
 
 [dependencies]
-esp-hal = { version = "0.19.*", default-features = false, features = [
-    "async",
-    "embedded-hal",
-] }
-esp-hal-embassy = { version = "0.2.*", default-features = false }
-esp-backtrace = { version = "0.13.*", default-features = false, features = [
+esp-hal = { version = "0.21.*", default-features = false }
+esp-hal-embassy = { version = "0.4.*", default-features = false }
+esp-backtrace = { version = "0.14.*", default-features = false, features = [
     "panic-handler",
     "exception-handler",
     "defmt",
 ] }
-esp-println = { version = "0.9.*", default-features = false, features = [
+esp-println = { version = "0.12.*", default-features = false, features = [
     "log",
     # "defmt-espflash",
     "jtag-serial",
@@ -39,7 +36,7 @@ bbqueue = { version = "0.5.1" }
 static_cell = { version = "2.1.0", features = [
     "nightly",
 ], default-features = false }
-portable-atomic = { version = "1.7.0", default-features = false }
+portable-atomic = { version = "1.9.0", default-features = false }
 
 [features]
 esp32s3 = [
@@ -77,3 +74,12 @@ esp32p4 = [] # TODO
 [package.metadata.docs.rs]
 features = ["esp32c6"]
 targets = ["riscv32imac-unknown-none-elf"]
+
+# [patch.crates-io]
+# esp-println = { git = "https://github.com/esp-rs/esp-hal", rev = "c26600f94349ab055fa12671273644611f18fdea", package = "esp-println" }
+# esp-backtrace = { git = "https://github.com/esp-rs/esp-hal", rev = "c26600f94349ab055fa12671273644611f18fdea", package = "esp-backtrace" }
+# esp-wifi = { git = "https://github.com/esp-rs/esp-hal", rev = "c26600f94349ab055fa12671273644611f18fdea", package = "esp-wifi" }
+# esp-wifi-sys = { git = "https://github.com/esp-rs/esp-wifi-sys", rev = "30d43461335cf5f58317dfc78a5397f48dae2e27", package = "esp-wifi-sys" }
+# esp-hal = { git = "https://github.com/esp-rs/esp-hal", rev = "c26600f94349ab055fa12671273644611f18fdea", package = "esp-hal" }
+# esp-hal-embbassy = { git = "https://github.com/esp-rs/esp-hal", rev = "c26600f94349ab055fa12671273644611f18fdea", package = "esp-hal-embassy" }
+# esp-metadata = { git = "https://github.com/esp-rs/esp-hal", rev = "c26600f94349ab055fa12671273644611f18fdea", package = "esp-metadata" }

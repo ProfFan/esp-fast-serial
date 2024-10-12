@@ -183,7 +183,7 @@ unsafe impl defmt::Logger for GlobalLogger {
 
 #[inline]
 fn do_write(bytes: &[u8]) {
-    Printer.write_bytes_assume_cs(bytes)
+    Printer::write_bytes(bytes)
 }
 
 /// Write to the USB serial buffer
@@ -237,7 +237,7 @@ pub async fn serial_comm_task(usb_dev: esp_hal::peripherals::USB_DEVICE) {
 
     // interrupt::enable(Interrupt::USB_DEVICE, interrupt::Priority::Priority1).unwrap();
 
-    let (mut usb_tx, mut usb_rx) = usb_serial.split();
+    let (mut usb_rx, mut usb_tx) = usb_serial.split();
 
     // Initialize the BBQueue
     let (producer, consumer) = unsafe { USB_SERIAL_TX_BUFFER.try_split().unwrap() };
